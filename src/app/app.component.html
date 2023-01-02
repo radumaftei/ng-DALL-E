@@ -12,13 +12,13 @@
       </span>
 
       <div class="number-of-items">
-        <label for="minmax-buttons" class="min-max">Min-Max Boundaries</label>
+        <label for="minmax-buttons" class="min-max">Number of images to generate ( max 5 )</label>
         <p-inputNumber [(ngModel)]="numberOfImages" mode="decimal" [showButtons]="true" id="minmax-buttons" [min]="1" [max]="5">
         </p-inputNumber>
       </div>
     </section>
 
-    <button [loading]="fetchingImages" [disabled]="disabledButtonState" pButton type="button" label="Generate images" class="p-button-success" (click)="generateImage()"></button>
+    <button [loading]="fetchingImages" [disabled]="disabledButtonState" pButton type="button" [label]="!fetchingImages ? 'Generate images' : 'Generating images'" class="p-button-success" (click)="generateImage()"></button>
 
     <section class="no-images" *ngIf="!imageSearch">
       <img src="https://i.imgur.com/rEtvbZL.jpeg" alt="Pretty cats" width="512" height="512">
