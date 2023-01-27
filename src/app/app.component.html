@@ -20,17 +20,20 @@
 
     <button [loading]="fetchingImages" [disabled]="disabledButtonState" pButton type="button" [label]="!fetchingImages ? 'Generate images' : 'Generating images'" class="p-button-success" (click)="generateImage()"></button>
 
-    <section class="no-images" *ngIf="!imageSearch">
+    <section class="no-images" *ngIf="!imageSearch && !errorCallingAPI">
       <img src="https://i.imgur.com/rEtvbZL.jpeg" alt="Pretty cats" width="512" height="512">
     </section>
 
-    <section class="images" *ngIf="imageSearch">
+    <section class="images" *ngIf="imageSearch && !errorCallingAPI">
       <img *ngFor="let imageUrl of openAIImageResults" class="result-image" src="{{imageUrl}}" alt="{{imageUrl}}"/>
     </section>
 
+    <h4 *ngIf="errorCallingAPI"> Try with another sentence </h4>
   </main>
 </ng-container>
 
+
+<!--github link + list readme on html-->
 <ng-template #noApiKey>
   <h1><pre> Uh-oh ! You dont have an Open AI API key 😔 😞 😓 😿 </pre></h1>
   <h3> Checkout the README for more details</h3>

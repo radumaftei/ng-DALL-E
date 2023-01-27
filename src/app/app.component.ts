@@ -20,6 +20,7 @@ export class AppComponent {
   openAIImageResults: string[] = [];
   apiKey?: string = hasOwnPropFailSafe(environment, 'openAIKey')
   fetchingImages = false;
+  errorCallingAPI?: unknown;
 
   constructor() {
     if (this.apiKey) {
@@ -42,15 +43,21 @@ export class AppComponent {
   async generateImage() {
     this.fetchingImages = true;
 
-    const result = await this.openai.createImage({
-      prompt: this.imageSearch,
-      n: this.numberOfImages,
-      size: '512x512'
-    });
+    try {
+      const result = await this.openai.createImage({
+        prompt: this.imageSearch,
+        n: this.numberOfImages,
+        size: '512x512'
+      });
 
-    this.openAIImageResults = result.data.data.map(e => e.url) as string[];
-
-    this.fetchingImages = false;
+      this.openAIImageResults = result.data.data.map(e => e.url) as string[];
+      this.errorCallingAPI = undefined;
+    } catch (e: unknown) {
+      this.errorCallingAPI = e;
+      console.log('e', e)
+    } finally {
+      this.fetchingImages = false;
+    }
   }
 
   addEmoji($event: any) {
